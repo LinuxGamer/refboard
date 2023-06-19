@@ -1,5 +1,5 @@
 // Global variables
-const images = [];
+let images = [];
 
 // DOM elements
 const fileInput = document.getElementById('file-input');
@@ -11,6 +11,9 @@ const imagePreview = document.getElementById('image-preview');
 fileInput.addEventListener('change', handleFileUpload);
 searchInput.addEventListener('input', handleSearch);
 imageGrid.addEventListener('click', handleImageClick);
+imageGrid.addEventListener('dragstart', handleDragStart);
+imageGrid.addEventListener('dragover', handleDragOver);
+imageGrid.addEventListener('drop', handleDrop);
 
 // Handle file uploads
 function handleFileUpload(event) {
@@ -33,6 +36,7 @@ function handleFileUpload(event) {
 function renderImageCard(image) {
   const imageCard = document.createElement('div');
   imageCard.className = 'image-card';
+  imageCard.draggable = true;
   const img = document.createElement('img');
   img.src = image.src;
   img.alt = image.name;
@@ -70,4 +74,30 @@ function renderPreview(image) {
   img.src = image.src;
   img.alt = image.name;
   imagePreview.appendChild(img);
+}
+
+// Handle drag start
+function handleDragStart(event) {
+  event.dataTransfer.setData('text/plain', event.target.id);
+}
+
+// Handle drag over
+function handleDragOver(event) {
+  event.preventDefault();
+}
+
+// Handle drop
+function handleDrop(event) {
+  event.preventDefault();
+  const imageId = event.dataTransfer.getData('text/plain');
+  const imageCard = document.getElementById(imageId);
+  const targetCard = event.target.closest('.image-card');
+  if (imageCard && targetCard && imageCard !== targetCard) {
+    const imageIndex = Array.from(imageCard.parentNode.children).indexOf(imageCard);
+    const targetIndex = Array.from(targetCard.parentNode.children).indexOf(targetCard);
+    imageCard.parentNode.insertBefore(imageCard, targetIndex > imageIndex ? targetCard.nextSibling : targetCard);
+    const tempImage = images[imageIndex];
+    images.splice(imageIndex, 1);
+    images.splice(targetIndex, 0, tempImage);
+  }
 }
