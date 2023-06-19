@@ -1,0 +1,32 @@
+#toolbar {
+  padding: 10px;
+}
+
+#file-input {
+  margin-right: 10px;
+}
+
+#search-input {
+  width: 200px;
+  padding: 5px;
+}
+
+#image-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+  padding: 10px;
+}
+
+.image-card {
+  cursor: pointer;
+}
+
+#image-preview {
+  padding: 10px;
+}
+
+#image-preview img {
+  max-width: 100%;
+  max-height: 500px;
+}
