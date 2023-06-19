@@ -19,7 +19,7 @@
 }
 
 .image-card {
-  cursor: pointer;
+  cursor: move;
 }
 
 #image-preview {
